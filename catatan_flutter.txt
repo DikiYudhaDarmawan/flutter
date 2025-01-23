@@ -1,0 +1,23 @@
+1 buat project flutter
+	flutter create nama_project -> cd nama_project
+
+2 install package get
+	flutter pub global activate get_cli
+	flutter pub add get
+
+3 inisiasi project menggunakan get x
+	get init
+
+4 install package pendukung
+	flutter pub add get_storage
+	flutter pub add google_fonts
+	flutter pub add hexcolor
+	flutter pub add lottie
+	flutter pub add zoom_tap_animation
+
+5 run project
+	flutter run (terminal)/ f5 (vscode)
+
+lanjutkan ke tahap 2
+
+https://olipiskandar.notion.site/cadfddd1a85f489ca9226866512e310c?v=c81c4079af494874906f85f55608ea1a 

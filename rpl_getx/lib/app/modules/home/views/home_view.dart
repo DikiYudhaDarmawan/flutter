@@ -21,14 +21,25 @@ class HomeView extends GetView<HomeController> {
               'HomeView is working',
               style: TextStyle(fontSize: 20),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
             ElevatedButton(
                 onPressed: () {
                   Get.toNamed('/counter');
                 },
-                child: Text('Counter Page'))
+                child: Text('Counter Page')),
+            ElevatedButton(
+                onPressed: () {
+                  Get.toNamed('/biodata');
+                },
+                child: Text('Biodata page'))
+              ]
+            )
           ],
+        )
         ),
-      ),
-    );
+      );
+    
   }
 }

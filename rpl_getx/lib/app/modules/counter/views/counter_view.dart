@@ -16,7 +16,7 @@ class CounterView extends GetView<CounterController> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
+          children: <Widget>[
             Obx( 
               () =>Text(controller.bilangan.toString()),
             ),
