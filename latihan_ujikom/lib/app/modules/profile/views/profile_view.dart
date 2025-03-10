@@ -6,15 +6,13 @@ import 'package:lottie/lottie.dart';
 
 import '../controllers/profile_controller.dart';
 
- final ProfileController controller = Get.put(ProfileController());
+//  final ProfileController controller = Get.put(ProfileController());
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
-
-
   @override
-
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),

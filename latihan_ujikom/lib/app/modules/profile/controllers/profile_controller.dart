@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:latihan_ujikom/app/data/profile_response.dart';
@@ -10,8 +9,6 @@ class ProfileController extends GetxController {
   final token = GetStorage().read('token');
   final isLoading = false.obs;
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
 
   void onInit() {
     getProfile();
