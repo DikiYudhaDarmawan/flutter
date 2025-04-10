@@ -9,10 +9,14 @@ class RegisterController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordConfirmationController =
-      TextEditingController();
+  TextEditingController passwordConfirmationController =TextEditingController();
+  TextEditingController jenisKelaminController = TextEditingController();
+  TextEditingController kelasIdController = TextEditingController();
+  TextEditingController jurusanIdController = TextEditingController();
+  TextEditingController gelombangBelajarIdController = TextEditingController();
+  TextEditingController nomorTelpController = TextEditingController();
+
   final authToken = GetStorage();
-  //TODO: Implement RegisterController
 
   void registerNow() async {
     final response = await _getConnect.post(BaseUrl.register, {
@@ -20,44 +24,40 @@ class RegisterController extends GetxController {
       'email': emailController.text,
       'password': passwordController.text,
       'password_confirmation': passwordConfirmationController.text,
+      'jenis_kelamin': jenisKelaminController.text,
+      'kelas_id': int.tryParse(kelasIdController.text),
+      'jurusan_id': int.tryParse(jurusanIdController.text),
+      'gelombang_belajar_id': int.tryParse(gelombangBelajarIdController.text),
+      'nomor_telp': nomorTelpController.text,
     });
 
     if (response.statusCode == 201) {
-      authToken.write('token', response.body['token']);
+      authToken.write('token', response.body['access_token']);
       Get.offAll(() => const DashboardView());
     } else {
       Get.snackbar(
         'Error',
-        response.body['error'].toString(),
+        response.body.toString(),
         icon: const Icon(Icons.error),
         backgroundColor: Colors.red,
         colorText: Colors.white,
         forwardAnimationCurve: Curves.bounceIn,
-        margin: const EdgeInsets.only(
-          top: 10,
-          left: 5,
-          right: 5,
-        ),
+        margin: const EdgeInsets.only(top: 10, left: 5, right: 5),
       );
     }
   }
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-   @override
   void onClose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    nameController.dispose();
     passwordConfirmationController.dispose();
+    jenisKelaminController.dispose();
+    kelasIdController.dispose();
+    jurusanIdController.dispose();
+    gelombangBelajarIdController.dispose();
+    nomorTelpController.dispose();
     super.onClose();
   }
 }

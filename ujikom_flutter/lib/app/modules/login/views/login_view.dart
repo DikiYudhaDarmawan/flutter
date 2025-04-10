@@ -1,104 +1,117 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ujikom_flutter/app/modules/register/views/register_view.dart';
-
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
   @override
- Widget build(BuildContext context) {
-    LoginController controller = Get.put(LoginController());
+  Widget build(BuildContext context) {
+    final LoginController controller = Get.put(LoginController());
     return Scaffold(
-      backgroundColor: HexColor('#feeee8'),
+      backgroundColor: HexColor('#FEEEE8'),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 70.0),
-              child: Lottie.network(
-                'https://gist.githubusercontent.com/olipiskandar/2095343e6b34255dcfb042166c4a3283/raw/d76e1121a2124640481edcf6e7712130304d6236/praujikom_kucing.json',
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: controller.emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                  hintText: 'Masukan Email',
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Lottie Animation untuk kesan menarik
+              Container(
+                height: 200,
+                child: Lottie.network(
+                  'https://gist.githubusercontent.com/olipiskandar/2095343e6b34255dcfb042166c4a3283/raw/d76e1121a2124640481edcf6e7712130304d6236/praujikom_kucing.json',
+                  fit: BoxFit.contain,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 15.0,
-                right: 15.0,
-                top: 15,
-                bottom: 0,
-              ),
-              child: TextField(
-                controller: controller.passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  hintText: 'Masukan Password',
+              const SizedBox(height: 30),
+              // Form Login dengan tampilan Card
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  controller.loginNow();
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: controller.emailController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          labelText: 'Email',
+                          hintText: 'Masukan Email',
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: controller.passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          labelText: 'Password',
+                          hintText: 'Masukan Password',
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              HexColor('#4e54c8'),
+                              HexColor('#8f94fb'),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            controller.loginNow();
+                          },
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Get.to(() => RegisterView());
-                },
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
+              const SizedBox(height: 20),
+              // Tombol untuk ke halaman Register
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Belum punya akun? "),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => RegisterView());
+                    },
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                        color: HexColor('#4e54c8'),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
