@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:ujikom_flutter/app/modules/dashboard/bindings/profileSiswa_binding.dart';
+import 'package:ujikom_flutter/app/modules/dashboard/views/ProfileSiswaView.dart';
 
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: '/profile',
+      page: () => const ProfileSiswaView(),
+      binding: profileSiswaBinding(),
     ),
   ];
 }

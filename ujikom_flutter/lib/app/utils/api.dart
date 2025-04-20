@@ -4,16 +4,19 @@ import 'dart:convert';
 import 'package:get/get.dart';
 
 class BaseUrl {
-  static String login = 'http://192.168.143.250/api/login';
-  static String register = 'http://192.168.143.250/api/register';
-  static String logout = 'http://192.168.143.250/api/logout';
+  static String login = 'http://192.168.0.76:8000/api/login';
+  static String register = 'http://192.168.0.76:8000/api/register';
+  static String logout = 'http://192.168.0.76:8000/api/logout';
 
-  static String profile = 'http://192.168.143.250/api/profile';
-  static String pengumuman = 'http://192.168.143.250/api/pengumuman';
-  static String evaluasi = 'http://192.168.143.250/api/evaluasi';
-  static String daftarEkskul = 'http://192.168.143.250/api/daftar-ekskul';
-  static String ekskuls = 'http://192.168.143.250/api/ekskuls';
-  static String yourEkskul = 'http://192.168.143.250/api/siswa/ekskuls';
+  static String profile = 'http://192.168.0.76:8000/api/profile';
+  static String profileSiswa = 'http://192.168.0.76:8000/api/profilewithsiswa';
+  static String  profileUpdate = 'http://192.168.0.76:8000/api/editprofilewithsiswa';
+  static String pengumuman = 'http://192.168.0.76:8000/api/pengumuman';
+  static String evaluasi = 'http://192.168.0.76:8000/api/evaluasi';
+  static String daftarEkskul = 'http://192.168.0.76:8000/api/daftar-ekskul';
+  static String ekskuls = 'http://192.168.0.76:8000/api/ekskuls';
+  static String yourEkskul = 'http://192.168.0.76:8000/api/siswa/ekskuls';
+  static String pengumumannotif ='http://192.168.0.76:8000/api/notifikasi-pengumuman';
 }
 
 class Api {

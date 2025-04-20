@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ujikom_flutter/app/data/EkskulResponse.dart';
-import 'package:ujikom_flutter/app/modules/dashboard/views/profile_view.dart';
+import 'package:ujikom_flutter/app/modules/dashboard/controllers/ProfileSiswaController.dart';
+import 'package:ujikom_flutter/app/modules/dashboard/views/ProfileSiswaView.dart'; // <-- disesuaikan lowercase
 import 'package:ujikom_flutter/app/utils/api.dart';
 import '../views/index_view.dart';
-
 import '../views/your_ekskul_view.dart';
 
 class DashboardController extends GetxController {
@@ -13,18 +13,19 @@ class DashboardController extends GetxController {
   var isLoading = true.obs;
   var ekskuls = <Ekskuls>[].obs;
   final _getConnect = GetConnect();
-  final box = GetStorage(); // Simpan GetStorage di variabel agar lebih rapi
+  final box = GetStorage();
 
   final List<Widget> pages = [
     const IndexView(),
     const YourEkskulView(),
-    const ProfileView(),
+    const ProfileSiswaView(),
   ];
 
   @override
   void onInit() {
     super.onInit();
     loadEkskuls();
+
   }
 
   Future<void> loadEkskuls() async {
@@ -50,9 +51,10 @@ class DashboardController extends GetxController {
     }
   }
 
-  void changeIndex(int index) {
-    selectedIndex.value = index;
-  }
+void changeIndex(int index) {
+      selectedIndex.value = index;
+    }
+  
 
   Future<void> logOut() async {
     try {
@@ -72,9 +74,16 @@ class DashboardController extends GetxController {
           colorText: Colors.white,
         );
 
-        await box.erase(); // Hapus semua data di GetStorage
+        // Hapus data lokal
+        await box.erase();
 
-        Get.offAllNamed('/login'); // Arahkan user ke halaman login
+        // Hapus controller profil agar tidak menyimpan data user sebelumnya
+        if (Get.isRegistered<ProfileSiswaController>()) {
+          Get.delete<ProfileSiswaController>();
+        }
+
+        // Redirect ke login
+        Get.offAllNamed('/login');
       } else {
         Get.snackbar(
           'Failed',

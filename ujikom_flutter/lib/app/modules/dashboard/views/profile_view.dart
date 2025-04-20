@@ -8,15 +8,12 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.put(ProfileController());
-    final DashboardController dashboardController =
-        Get.find<DashboardController>(); // Panggil DashboardController
+    final profileController = Get.put(ProfileController());
+    final dashboardController = Get.find<DashboardController>();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profil Anda'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
       ),
       body: Obx(() {
         if (profileController.isLoading.value) {
@@ -35,12 +32,23 @@ class ProfileView extends StatelessWidget {
         final profile = profileController.profile.value!;
 
         return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                // Avatar Profile
-                CircleAvatar(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Avatar
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blueAccent.withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.blueAccent,
                   child: Text(
@@ -52,88 +60,109 @@ class ProfileView extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  profile.name,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  profile.email,
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                ),
-                const SizedBox(height: 20),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                profile.name,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                profile.email,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 24),
 
-                // Profile Card
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  elevation: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        _buildProfileRow(Icons.person, "Nama", profile.name),
-                        _buildProfileRow(Icons.email, "Email", profile.email),
-                        _buildProfileRow(Icons.badge, "Role", profile.role),
-                        _buildProfileRow(
-                          Icons.check_circle,
-                          "Status",
-                          profile.status == 1 ? "Aktif" : "Nonaktif",
-                          statusColor:
-                              profile.status == 1 ? Colors.green : Colors.red,
-                        ),
-                        _buildProfileRow(
-                            Icons.date_range, "Dibuat pada", profile.createdAt),
-                      ],
+              // Info Card
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  children: [
+                    _buildProfileRow(Icons.person, "Nama", profile.name),
+                    _divider(),
+                    _buildProfileRow(Icons.email, "Email", profile.email),
+                    _divider(),
+                    _buildProfileRow(Icons.badge, "Role", profile.role),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+
+              // Logout Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    await dashboardController.logOut();
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Keluar"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }),
-
-      // FloatingActionButton untuk Logout
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await dashboardController.logOut(); // Panggil logOut dari controller
-        },
-        backgroundColor: Colors.redAccent,
-        child: const Icon(Icons.logout, color: Colors.white),
-      ),
     );
   }
 
-  // Widget untuk menampilkan setiap baris informasi
+  Widget _divider() {
+    return const Divider(
+      height: 30,
+      thickness: 1,
+      color: Color(0xFFE0E0E0),
+    );
+  }
+
   Widget _buildProfileRow(IconData icon, String label, String value,
       {Color? statusColor}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.blueAccent),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+    return Row(
+      children: [
+        Icon(icon, color: Colors.blueAccent),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          Text(
+        ),
+        Flexible(
+          child: Text(
             value,
+            textAlign: TextAlign.right,
             style: TextStyle(
               fontSize: 16,
-              color: statusColor ?? Colors.black87,
               fontWeight: FontWeight.w500,
+              color: statusColor ?? Colors.black87,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

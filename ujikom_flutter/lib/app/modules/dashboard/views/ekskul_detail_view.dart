@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ujikom_flutter/app/data/EkskulResponse.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class EkskulDetailView extends GetView {
   const EkskulDetailView({super.key, required this.ekskul});
@@ -8,125 +10,151 @@ class EkskulDetailView extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = HexColor("#6200EE");
+    final darkText = HexColor("#212121");
+    final lightText = HexColor("#757575");
+    final greyLine = HexColor("#E0E0E0");
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(ekskul.name ?? "Detail Ekskul"),
+        title: Text(
+          ekskul.name ?? "Detail Ekskul",
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: primaryColor,
         foregroundColor: Colors.white,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Gambar Ekskul
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(15),
               child: Image.network(
                 ekskul.foto?.isNotEmpty == true
                     ? ekskul.foto!
                     : 'https://picsum.photos/id/${ekskul.id}/700/300',
-                fit: BoxFit.cover,
                 width: double.infinity,
                 height: 220,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 220,
-                    color: Colors.grey[300],
-                    child: const Center(child: Text('Gambar tidak tersedia')),
-                  );
-                },
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  height: 220,
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Text('Gambar tidak tersedia'),
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
 
             // Nama Ekskul
             Text(
               ekskul.name ?? "Tidak ada nama",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: darkText,
+              ),
             ),
             const SizedBox(height: 8),
 
             // Deskripsi Ekskul
             Text(
               ekskul.description ?? "Tidak ada deskripsi",
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                color: lightText,
+                height: 1.6,
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
 
-            // Informasi Tambahan dalam Card
+            // Informasi Tambahan
             Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(14),
               ),
-              elevation: 3,
+              elevation: 4,
+              shadowColor: Colors.black12,
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Column(
                   children: [
-                    // Lokasi Ekskul
-                    ListTile(
-                      leading: const Icon(Icons.location_on, color: Colors.red),
-                      title: const Text("Lokasi"),
-                      subtitle: Text(
-                        ekskul.location ?? "Tidak ada lokasi",
-                        style: const TextStyle(fontSize: 16),
-                      ),
+                    _buildInfoTile(
+                      icon: Icons.location_on,
+                      iconColor: Colors.red,
+                      title: 'Lokasi',
+                      subtitle: ekskul.location ?? "Tidak ada lokasi",
                     ),
-                    const Divider(),
-
-                    // Jadwal Ekskul 1
-                    ListTile(
-                      leading:
-                          const Icon(Icons.event, color: Colors.blueAccent),
-                      title: const Text("Jadwal 1"),
-                      subtitle: Text(
-                        "${ekskul.activityDate ?? 'Tidak tersedia'} | ${ekskul.startTime ?? '--:--'} - ${ekskul.endTime ?? '--:--'}",
-                        style: const TextStyle(fontSize: 16),
-                      ),
+                    Divider(color: greyLine),
+                    _buildInfoTile(
+                      icon: Icons.event,
+                      iconColor: Colors.blueAccent,
+                      title: 'Jadwal 1',
+                      subtitle:
+                          "${ekskul.activityDate ?? '-'} | ${ekskul.startTime ?? '--:--'} - ${ekskul.endTime ?? '--:--'}",
                     ),
-                    const Divider(),
-
-                    // Jadwal Ekskul 2 (jika ada)
                     if (ekskul.activityDate2 != null &&
                         ekskul.activityDate2!.isNotEmpty) ...[
-                      ListTile(
-                        leading:
-                            const Icon(Icons.event, color: Colors.blueAccent),
-                        title: const Text("Jadwal 2"),
-                        subtitle: Text(
-                          "${ekskul.activityDate2 ?? 'Tidak tersedia'} | ${ekskul.startTime2 ?? '--:--'} - ${ekskul.endTime2 ?? '--:--'}",
-                          style: const TextStyle(fontSize: 16),
-                        ),
+                      Divider(color: greyLine),
+                      _buildInfoTile(
+                        icon: Icons.event,
+                        iconColor: Colors.blueAccent,
+                        title: 'Jadwal 2',
+                        subtitle:
+                            "${ekskul.activityDate2 ?? '-'} | ${ekskul.startTime2 ?? '--:--'} - ${ekskul.endTime2 ?? '--:--'}",
                       ),
-                      const Divider(),
                     ],
-
-                    // Pembina ID (Opsional)
-                    if (ekskul.pembinaId != null)
-                      ListTile(
-                        leading: const Icon(Icons.person, color: Colors.green),
-                        title: const Text("Pembina ID"),
-                        subtitle: Text(ekskul.pembinaId.toString()),
+                    if (ekskul.pembinaId != null) ...[
+                      Divider(color: greyLine),
+                      _buildInfoTile(
+                        icon: Icons.person,
+                        iconColor: Colors.green,
+                        title: 'Pembina ID',
+                        subtitle: ekskul.pembinaId.toString(),
                       ),
+                    ]
                   ],
                 ),
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            // Tanggal Dibuat & Diperbarui
-            Text(
-              "Dibuat: ${ekskul.createdAt ?? '-'}",
-              style: const TextStyle(fontSize: 14, color: Colors.black54),
-            ),
-            Text(
-              "Diperbarui: ${ekskul.updatedAt ?? '-'}",
-              style: const TextStyle(fontSize: 14, color: Colors.black54),
-            ),
+           
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoTile({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+  }) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: CircleAvatar(
+        backgroundColor: iconColor.withOpacity(0.1),
+        child: Icon(icon, color: iconColor),
+      ),
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Text(
+          subtitle,
+          style: GoogleFonts.poppins(fontSize: 14, color: HexColor("#616161")),
         ),
       ),
     );
